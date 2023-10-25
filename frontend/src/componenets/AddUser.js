@@ -5,16 +5,18 @@ import { useNavigate } from 'react-router-dom';
 const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("Male");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const saveUser = async (e) => {
     e.preventDefault();
+    console.log("test");
     try {
-      await axios.post('http://loaclhost:5000/users', {
+      await axios.post('http://localhost:5000/register', {
         name,
         email,
-        password
+        password,
+        confirmPassword: password 
       });
       navigate("/")
     } catch (error) {

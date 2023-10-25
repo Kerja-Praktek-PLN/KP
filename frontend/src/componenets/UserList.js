@@ -16,7 +16,7 @@ const UserList = () => {
 
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/users/${id}`);
+            await axios.delete(`http://localhost:5000/delete/${id}`);
             getUsers();
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ const UserList = () => {
                             <td>{user.email}</td>
                             <td>{user.password}</td>
                             <td>
-                                <Link to={`edit/${user.id}`} className="button is-small is-info">Edit</Link>
+                                <Link to={`edit/${user.id}`} state={{ user }} className="button is-small is-info">Edit</Link>
                                 <button onClick={()=> deleteUser(user.id)} className="button is-small is-danger">Delete</button>
                             </td>
                         </tr>

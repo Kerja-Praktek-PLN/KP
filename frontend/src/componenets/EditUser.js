@@ -1,22 +1,31 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const EditUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("Male");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const {id} = useParams();
+  const location = useLocation();
 
   useEffect(()=>{
-    getUserById();
+    // getUserById();
+    const user = location.state ? location.state.user : null;
+    console.log(user);
+    console.log(location.state)
+    setName(user.name);
+    setEmail(user.email);
+    setPassword(user.password);
   }, []);
 
   const saveUser = async (e) => {
     e.preventDefault();
+    console.log(id)
     try {
-      await axios.post('http://loaclhost:5000/users', {
+      await axios.patch(`http://localhost:5000/edit/${id}`, {
         name,
         email,
         password
@@ -28,7 +37,7 @@ const EditUser = () => {
   };
 
   const getUserById = async() => {
-    const response = await axios.get('http://localhost:5000/users/${id}');
+    const response = await axios.get(`http://localhost:5000/edit/${id}`);
     setName(response.data.name);
     setEmail(response.data.email);
     setPassword(response.data.password);
@@ -65,13 +74,13 @@ const EditUser = () => {
           <div className="field">
             <label className="label">Password</label>
             <div className="control">
-              <div className="select is-fullwidth">
-                <select value={password} 
-              onChange={(e)=> setPassword(e.target.value)}>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
+            <input 
+              type="text" 
+              className="input" 
+              value={password} 
+              onChange={(e)=> setPassword(e.target.value)}
+              placeholder="Password"
+              />
             </div>
           </div>
           <div className="field">
